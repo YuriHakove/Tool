@@ -24,7 +24,10 @@ namespace PPTCovertToPicture
         public static extern bool GetSaveFileName([In, Out] OpenFileName ofn);
         public string Openurl;
         public string Saveurl;
-        public string SaveName="demo";
+        public string SaveName="幻灯片";
+
+
+        KdGoldAPI.KdApiSearchDemo KDApi = new KdGoldAPI.KdApiSearchDemo();
         public Form1()
         {
 
@@ -91,13 +94,16 @@ namespace PPTCovertToPicture
             ApplicationClass pptApplication = new ApplicationClass();
             Presentation pptPresentation = pptApplication.Presentations.Open(Openurl, MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
             pptPresentation.SaveAs(Saveurl, PpSaveAsFileType.ppSaveAsPNG);
-            MessageBox.Show("转换完成", "提示", MessageBoxButtons.OK);
+            //MessageBox.Show("转换完成", "提示", MessageBoxButtons.OK);
+            Saveurl = Saveurl.Split('.')[0];
+            System.Diagnostics.Process.Start(Saveurl);
         }
       
 
         private void btn_save_Click(object sender, EventArgs e)
         {
             Saveurl = SaveFile(System.Windows.Forms.Application.StartupPath, SaveName);
+            Saveurl = Saveurl.Split('.')[0];
             PPTSaveUrl.Text = Saveurl;
         }
         /// <summary>  
@@ -253,10 +259,12 @@ namespace PPTCovertToPicture
             MessageBox.Show("解密完成", "提示", MessageBoxButtons.OK);
         }
 
-
-      
+        private void btn_CheckKD_Click(object sender, EventArgs e)
+        {
+           tBx_ShowKD.Text= KDApi.getOrderTracesByJson();
+        }
     }
-    
+
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public class OpenFileName

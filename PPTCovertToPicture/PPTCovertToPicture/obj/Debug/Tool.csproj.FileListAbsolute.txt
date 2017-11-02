@@ -11,3 +11,16 @@ G:\demo\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\PPTCovertToPicture.Form1
 G:\demo\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.Properties.Resources.resources
 G:\demo\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.exe
 G:\demo\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.pdb
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csprojResolveAssemblyReference.cache
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csproj.ResolveComReference.cache
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\PPTCovertToPicture.Form1.resources
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.Properties.Resources.resources
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csproj.GenerateResource.Cache
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.exe
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.pdb
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Tool.exe
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Tool.pdb
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Microsoft.Office.Interop.PowerPoint.dll
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\office.dll
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Microsoft.Vbe.Interop.dll
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\stdole.dll

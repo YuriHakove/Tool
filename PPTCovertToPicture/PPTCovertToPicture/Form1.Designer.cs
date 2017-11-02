@@ -44,16 +44,26 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
+            this.btn_CheckKD = new System.Windows.Forms.Button();
+            this.tBx_DanHao = new System.Windows.Forms.TextBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tBx_ShowKD = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_open
             // 
-            this.btn_open.Location = new System.Drawing.Point(12, 41);
+            this.btn_open.Location = new System.Drawing.Point(17, 27);
             this.btn_open.Name = "btn_open";
             this.btn_open.Size = new System.Drawing.Size(75, 23);
             this.btn_open.TabIndex = 0;
@@ -63,7 +73,7 @@
             // 
             // btn_covert
             // 
-            this.btn_covert.Location = new System.Drawing.Point(174, 41);
+            this.btn_covert.Location = new System.Drawing.Point(179, 27);
             this.btn_covert.Name = "btn_covert";
             this.btn_covert.Size = new System.Drawing.Size(75, 23);
             this.btn_covert.TabIndex = 1;
@@ -73,7 +83,7 @@
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(93, 41);
+            this.btn_save.Location = new System.Drawing.Point(98, 27);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(75, 23);
             this.btn_save.TabIndex = 2;
@@ -103,7 +113,10 @@
             this.panel1.Controls.Add(this.PPTSaveUrl);
             this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(11, 12);
+            this.panel1.Controls.Add(this.btn_save);
+            this.panel1.Controls.Add(this.btn_covert);
+            this.panel1.Controls.Add(this.btn_open);
+            this.panel1.Location = new System.Drawing.Point(13, 21);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(339, 168);
             this.panel1.TabIndex = 6;
@@ -128,7 +141,7 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label2);
-            this.panel2.Location = new System.Drawing.Point(11, 206);
+            this.panel2.Location = new System.Drawing.Point(14, 6);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(338, 208);
             this.panel2.TabIndex = 7;
@@ -202,35 +215,103 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "加密解密文档";
             // 
-            // panel3
+            // tabControl1
             // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.label4);
-            this.panel3.Location = new System.Drawing.Point(430, 12);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(364, 168);
-            this.panel3.TabIndex = 8;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(12, 34);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(412, 280);
+            this.tabControl1.TabIndex = 9;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.panel1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(404, 254);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "PPT转图片";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.panel2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(404, 254);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "文本文档加密解密";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.tBx_ShowKD);
+            this.tabPage3.Controls.Add(this.label4);
+            this.tabPage3.Controls.Add(this.btn_CheckKD);
+            this.tabPage3.Controls.Add(this.tBx_DanHao);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(404, 254);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "快递服务";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 3);
+            this.label4.Location = new System.Drawing.Point(21, 14);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 12);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "快递查询";
+            this.label4.Size = new System.Drawing.Size(77, 12);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "请输入运单号";
+            // 
+            // btn_CheckKD
+            // 
+            this.btn_CheckKD.Location = new System.Drawing.Point(264, 41);
+            this.btn_CheckKD.Name = "btn_CheckKD";
+            this.btn_CheckKD.Size = new System.Drawing.Size(75, 23);
+            this.btn_CheckKD.TabIndex = 1;
+            this.btn_CheckKD.Text = "查询";
+            this.btn_CheckKD.UseVisualStyleBackColor = true;
+            this.btn_CheckKD.Click += new System.EventHandler(this.btn_CheckKD_Click);
+            // 
+            // tBx_DanHao
+            // 
+            this.tBx_DanHao.Location = new System.Drawing.Point(23, 41);
+            this.tBx_DanHao.Name = "tBx_DanHao";
+            this.tBx_DanHao.Size = new System.Drawing.Size(189, 21);
+            this.tBx_DanHao.TabIndex = 0;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(404, 254);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "开发中...";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tBx_ShowKD
+            // 
+            this.tBx_ShowKD.Location = new System.Drawing.Point(23, 106);
+            this.tBx_ShowKD.Multiline = true;
+            this.tBx_ShowKD.Name = "tBx_ShowKD";
+            this.tBx_ShowKD.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.tBx_ShowKD.Size = new System.Drawing.Size(238, 145);
+            this.tBx_ShowKD.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(848, 414);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.btn_save);
-            this.Controls.Add(this.btn_covert);
-            this.Controls.Add(this.btn_open);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(477, 347);
+            this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "愈来愈好制作QQ375275672";
@@ -238,8 +319,11 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -261,8 +345,15 @@
         private System.Windows.Forms.Label PPTSaveUrl;
         private System.Windows.Forms.Button btn_saveUrl;
         private System.Windows.Forms.Label lb_saveUrl;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btn_CheckKD;
+        private System.Windows.Forms.TextBox tBx_DanHao;
+        private System.Windows.Forms.TextBox tBx_ShowKD;
     }
 }
 
