@@ -11,7 +11,8 @@ using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using System.IO;
-using SiuStream;  
+using SiuStream;
+using Newtonsoft.Json;
 
 namespace PPTCovertToPicture
 {
@@ -27,7 +28,7 @@ namespace PPTCovertToPicture
         public string SaveName="幻灯片";
 
 
-        KdGoldAPI.KdApiSearchDemo KDApi = new KdGoldAPI.KdApiSearchDemo();
+        KdGoldAPI.KdApiSearch KDApi = new KdGoldAPI.KdApiSearch();
         public Form1()
         {
 
@@ -261,10 +262,132 @@ namespace PPTCovertToPicture
 
         private void btn_CheckKD_Click(object sender, EventArgs e)
         {
-           tBx_ShowKD.Text= KDApi.getOrderTracesByJson();
+            if (tBx_DanHao.Text == "")
+            {
+                MessageBox.Show("请输入单号", "提示", MessageBoxButtons.OK);
+                return;
+            }
+            KdGoldAPI.KdApiSearch.LosisticCode = tBx_DanHao.Text;
+            dataGridView_KD.Rows.Clear();
+            explainJson();
+            //tBx_ShowKD.Text= KDApi.getOrderTracesByJson();
+        }
+        private void explainJson()
+        {
+            var Json= KDApi.getOrderTracesByJson();
+            //将Json数据反序列化
+            JsonParser jp = (JsonParser)JsonConvert.DeserializeObject<JsonParser>(Json);
+            List<Traces> list = jp.Traces;
+            if (jp.Success == false||list.Count==0)
+            {
+                MessageBox.Show("请检查该订单是否为该物流\r\n"+jp.Reason, "查询失败", MessageBoxButtons.OK);
+                return;
+            }
+
+           
+            for(int i=0;i<list.Count;i++)
+            {
+                dataGridView_KD.Rows.Add();
+                dataGridView_KD.Rows[i].Cells[0].Value = list[i].AcceptTime.ToString();
+                dataGridView_KD.Rows[i].Cells[1].Value = list[i].AcceptStation.ToString();
+                if (list[i].Remark == null)
+                    list[i].Remark = "无";
+                dataGridView_KD.Rows[i].Cells[2].Value = list[i].Remark.ToString();
+                
+            }
+            lb_KDN.Text = list[list.Count - 1].AcceptTime + " " + list[list.Count - 1].AcceptStation;
+            //foreach (var i in list)
+            //    dataGridView_KD.Columns[0]. = list;
+
+
+
+        }
+        private void comboBox1_TextChanged(object sender, EventArgs e)
+        {
+            switch (cBx_ShipperCode.Text)
+            {
+                case "EMS":KdGoldAPI.KdApiSearch.ShipperCode = "EMS";
+                    break;
+                case "顺丰":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "SF";
+                    break;
+                case "圆通":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "YTO";
+                    break;
+                case "百世快递":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "HTKY";
+                    break;
+                case "中通":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "ZTO";
+                    break;
+                case "韵达":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "YD";
+                    break;
+                case "申通":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "STO";
+                    break;
+                case "德邦":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "DBL";
+                    break;
+                case "优速":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "UC";
+                    break;
+                case "宅急送":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "ZJS";
+                    break;
+                case "京东":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "JD";
+                    break;
+                case "信丰":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "XFEX";
+                    break;
+                case "全峰":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "QFKD";
+                    break;
+                case "跨越速运":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "KYSY";
+                   break;
+                case "安能":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "ANE";
+                    break;
+                case "快捷":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "FAST";
+                    break;
+                case "国通":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "GTO";
+                    break;
+                case "天天":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "HHTT";
+                    break;
+                case "邮政快递包裹":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "YZPY";
+                    break;                
+            }
+        }
+
+        private void timer_Time_Tick(object sender, EventArgs e)
+        {
+            lbl_time.Text = DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss");
         }
     }
-
+    public class JsonParser
+    {
+        public int EBusinessID;
+        public int OrderCode;
+        public string ShipperCode;
+        public string LogisticCode;
+        public bool Success;
+        public string CallBack;
+        public int State;
+        public string Reason;
+        public List<Traces> Traces;
+    }
+    public class Traces
+    {
+        public string AcceptTime;
+        public string AcceptStation;
+        public string Remark;
+    }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public class OpenFileName

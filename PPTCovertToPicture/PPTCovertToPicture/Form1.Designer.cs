@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_open = new System.Windows.Forms.Button();
             this.btn_covert = new System.Windows.Forms.Button();
@@ -48,17 +49,27 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.dataGridView_KD = new System.Windows.Forms.DataGridView();
+            this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.状态 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lb_KDN = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cBx_ShipperCode = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btn_CheckKD = new System.Windows.Forms.Button();
             this.tBx_DanHao = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tBx_ShowKD = new System.Windows.Forms.TextBox();
+            this.lbl_time = new System.Windows.Forms.Label();
+            this.timer_Time = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_KD)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_open
@@ -221,10 +232,10 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Location = new System.Drawing.Point(12, 34);
+            this.tabControl1.Location = new System.Drawing.Point(7, 34);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(412, 280);
+            this.tabControl1.Size = new System.Drawing.Size(462, 301);
             this.tabControl1.TabIndex = 9;
             // 
             // tabPage1
@@ -233,7 +244,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(404, 254);
+            this.tabPage1.Size = new System.Drawing.Size(454, 275);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "PPT转图片";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -244,28 +255,133 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(404, 254);
+            this.tabPage2.Size = new System.Drawing.Size(454, 275);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "文本文档加密解密";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.tBx_ShowKD);
+            this.tabPage3.Controls.Add(this.dataGridView_KD);
+            this.tabPage3.Controls.Add(this.lb_KDN);
+            this.tabPage3.Controls.Add(this.label6);
+            this.tabPage3.Controls.Add(this.cBx_ShipperCode);
+            this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.label4);
             this.tabPage3.Controls.Add(this.btn_CheckKD);
             this.tabPage3.Controls.Add(this.tBx_DanHao);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(404, 254);
+            this.tabPage3.Size = new System.Drawing.Size(454, 275);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "快递服务";
+            this.tabPage3.Text = "快递查询";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView_KD
+            // 
+            this.dataGridView_KD.AllowUserToDeleteRows = false;
+            this.dataGridView_KD.AllowUserToResizeColumns = false;
+            this.dataGridView_KD.AllowUserToResizeRows = false;
+            this.dataGridView_KD.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridView_KD.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_KD.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.time,
+            this.状态,
+            this.Remark});
+            this.dataGridView_KD.Location = new System.Drawing.Point(23, 119);
+            this.dataGridView_KD.Name = "dataGridView_KD";
+            this.dataGridView_KD.RowHeadersVisible = false;
+            this.dataGridView_KD.RowHeadersWidth = 4;
+            this.dataGridView_KD.RowTemplate.Height = 23;
+            this.dataGridView_KD.Size = new System.Drawing.Size(417, 141);
+            this.dataGridView_KD.TabIndex = 8;
+            // 
+            // time
+            // 
+            this.time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.time.HeaderText = "时间";
+            this.time.Name = "time";
+            this.time.ReadOnly = true;
+            this.time.Width = 54;
+            // 
+            // 状态
+            // 
+            this.状态.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.状态.HeaderText = "状态";
+            this.状态.Name = "状态";
+            this.状态.ReadOnly = true;
+            this.状态.Width = 54;
+            // 
+            // Remark
+            // 
+            this.Remark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Remark.HeaderText = "备注";
+            this.Remark.Name = "Remark";
+            this.Remark.ReadOnly = true;
+            this.Remark.Width = 54;
+            // 
+            // lb_KDN
+            // 
+            this.lb_KDN.ForeColor = System.Drawing.Color.DarkRed;
+            this.lb_KDN.Location = new System.Drawing.Point(102, 65);
+            this.lb_KDN.Name = "lb_KDN";
+            this.lb_KDN.Size = new System.Drawing.Size(300, 51);
+            this.lb_KDN.TabIndex = 7;
+            this.lb_KDN.Text = "null";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(23, 76);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "最新动态";
+            // 
+            // cBx_ShipperCode
+            // 
+            this.cBx_ShipperCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cBx_ShipperCode.FormattingEnabled = true;
+            this.cBx_ShipperCode.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.cBx_ShipperCode.Items.AddRange(new object[] {
+            "EMS",
+            "顺丰",
+            "圆通",
+            "百世快递",
+            "中通",
+            "韵达\t",
+            "申通",
+            "德邦",
+            "优速",
+            "宅急送",
+            "京东",
+            "信丰",
+            "全峰",
+            "跨越速运",
+            "安能",
+            "快捷",
+            "国通",
+            "天天",
+            "邮政快递包裹"});
+            this.cBx_ShipperCode.Location = new System.Drawing.Point(104, 14);
+            this.cBx_ShipperCode.Name = "cBx_ShipperCode";
+            this.cBx_ShipperCode.Size = new System.Drawing.Size(121, 20);
+            this.cBx_ShipperCode.TabIndex = 5;
+            this.cBx_ShipperCode.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(21, 17);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "请选择快递";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 14);
+            this.label4.Location = new System.Drawing.Point(21, 44);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(77, 12);
             this.label4.TabIndex = 2;
@@ -273,7 +389,7 @@
             // 
             // btn_CheckKD
             // 
-            this.btn_CheckKD.Location = new System.Drawing.Point(264, 41);
+            this.btn_CheckKD.Location = new System.Drawing.Point(314, 39);
             this.btn_CheckKD.Name = "btn_CheckKD";
             this.btn_CheckKD.Size = new System.Drawing.Size(75, 23);
             this.btn_CheckKD.TabIndex = 1;
@@ -283,34 +399,41 @@
             // 
             // tBx_DanHao
             // 
-            this.tBx_DanHao.Location = new System.Drawing.Point(23, 41);
+            this.tBx_DanHao.Location = new System.Drawing.Point(104, 41);
             this.tBx_DanHao.Name = "tBx_DanHao";
             this.tBx_DanHao.Size = new System.Drawing.Size(189, 21);
             this.tBx_DanHao.TabIndex = 0;
+            this.tBx_DanHao.Text = "886979750155933464";
             // 
             // tabPage4
             // 
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(404, 254);
+            this.tabPage4.Size = new System.Drawing.Size(454, 275);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "开发中...";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // tBx_ShowKD
+            // lbl_time
             // 
-            this.tBx_ShowKD.Location = new System.Drawing.Point(23, 106);
-            this.tBx_ShowKD.Multiline = true;
-            this.tBx_ShowKD.Name = "tBx_ShowKD";
-            this.tBx_ShowKD.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.tBx_ShowKD.Size = new System.Drawing.Size(238, 145);
-            this.tBx_ShowKD.TabIndex = 3;
+            this.lbl_time.AutoSize = true;
+            this.lbl_time.Location = new System.Drawing.Point(333, 338);
+            this.lbl_time.Name = "lbl_time";
+            this.lbl_time.Size = new System.Drawing.Size(41, 12);
+            this.lbl_time.TabIndex = 10;
+            this.lbl_time.Text = "label7";
+            // 
+            // timer_Time
+            // 
+            this.timer_Time.Enabled = true;
+            this.timer_Time.Tick += new System.EventHandler(this.timer_Time_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(477, 347);
+            this.ClientSize = new System.Drawing.Size(477, 354);
+            this.Controls.Add(this.lbl_time);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -324,7 +447,9 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_KD)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -353,7 +478,16 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btn_CheckKD;
         private System.Windows.Forms.TextBox tBx_DanHao;
-        private System.Windows.Forms.TextBox tBx_ShowKD;
+        private System.Windows.Forms.Label lb_KDN;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cBx_ShipperCode;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridView dataGridView_KD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 状态;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Remark;
+        private System.Windows.Forms.Label lbl_time;
+        private System.Windows.Forms.Timer timer_Time;
     }
 }
 

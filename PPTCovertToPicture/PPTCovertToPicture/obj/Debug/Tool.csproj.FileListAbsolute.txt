@@ -24,3 +24,6 @@ D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Microsoft.Of
 D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\office.dll
 D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Microsoft.Vbe.Interop.dll
 D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\stdole.dll
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Newtonsoft.Json.dll
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Newtonsoft.Json.pdb
+D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Newtonsoft.Json.xml
