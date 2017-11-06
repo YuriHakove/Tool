@@ -49,6 +49,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.cBx_DanHao = new System.Windows.Forms.ComboBox();
             this.dataGridView_KD = new System.Windows.Forms.DataGridView();
             this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.状态 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,10 +60,19 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btn_CheckKD = new System.Windows.Forms.Button();
-            this.tBx_DanHao = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btn_ChooseScreen = new System.Windows.Forms.Button();
+            this.btn_FullScreen = new System.Windows.Forms.Button();
+            this.lb_SaveScreen = new System.Windows.Forms.Label();
+            this.btn_SaveScreen = new System.Windows.Forms.Button();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
             this.lbl_time = new System.Windows.Forms.Label();
             this.timer_Time = new System.Windows.Forms.Timer(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.功能介绍ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.开发者ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -70,6 +80,8 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_KD)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_open
@@ -232,6 +244,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Location = new System.Drawing.Point(7, 34);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -262,6 +275,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cBx_DanHao);
             this.tabPage3.Controls.Add(this.dataGridView_KD);
             this.tabPage3.Controls.Add(this.lb_KDN);
             this.tabPage3.Controls.Add(this.label6);
@@ -269,13 +283,24 @@
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.label4);
             this.tabPage3.Controls.Add(this.btn_CheckKD);
-            this.tabPage3.Controls.Add(this.tBx_DanHao);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(454, 275);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "快递查询";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // cBx_DanHao
+            // 
+            this.cBx_DanHao.FormattingEnabled = true;
+            this.cBx_DanHao.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.cBx_DanHao.Location = new System.Drawing.Point(104, 42);
+            this.cBx_DanHao.Name = "cBx_DanHao";
+            this.cBx_DanHao.Size = new System.Drawing.Size(181, 20);
+            this.cBx_DanHao.TabIndex = 9;
+            this.cBx_DanHao.Text = "886979750155933464";
+            this.cBx_DanHao.SelectedIndexChanged += new System.EventHandler(this.cBx_DanHao_SelectedIndexChanged);
+            this.cBx_DanHao.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cBx_DanHao_MouseClick);
             // 
             // dataGridView_KD
             // 
@@ -397,22 +422,66 @@
             this.btn_CheckKD.UseVisualStyleBackColor = true;
             this.btn_CheckKD.Click += new System.EventHandler(this.btn_CheckKD_Click);
             // 
-            // tBx_DanHao
-            // 
-            this.tBx_DanHao.Location = new System.Drawing.Point(104, 41);
-            this.tBx_DanHao.Name = "tBx_DanHao";
-            this.tBx_DanHao.Size = new System.Drawing.Size(189, 21);
-            this.tBx_DanHao.TabIndex = 0;
-            this.tBx_DanHao.Text = "886979750155933464";
-            // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.btn_ChooseScreen);
+            this.tabPage4.Controls.Add(this.btn_FullScreen);
+            this.tabPage4.Controls.Add(this.lb_SaveScreen);
+            this.tabPage4.Controls.Add(this.btn_SaveScreen);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(454, 275);
             this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "开发中...";
+            this.tabPage4.Text = "截屏功能";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // btn_ChooseScreen
+            // 
+            this.btn_ChooseScreen.Location = new System.Drawing.Point(222, 152);
+            this.btn_ChooseScreen.Name = "btn_ChooseScreen";
+            this.btn_ChooseScreen.Size = new System.Drawing.Size(75, 35);
+            this.btn_ChooseScreen.TabIndex = 2;
+            this.btn_ChooseScreen.Text = "鼠标截屏";
+            this.btn_ChooseScreen.UseVisualStyleBackColor = true;
+            this.btn_ChooseScreen.Click += new System.EventHandler(this.btn_ChooseScreen_Click);
+            // 
+            // btn_FullScreen
+            // 
+            this.btn_FullScreen.Location = new System.Drawing.Point(114, 152);
+            this.btn_FullScreen.Name = "btn_FullScreen";
+            this.btn_FullScreen.Size = new System.Drawing.Size(75, 35);
+            this.btn_FullScreen.TabIndex = 2;
+            this.btn_FullScreen.Text = "截取全屏(&A)";
+            this.btn_FullScreen.UseVisualStyleBackColor = true;
+            this.btn_FullScreen.Click += new System.EventHandler(this.btn_FullScreen_Click);
+            // 
+            // lb_SaveScreen
+            // 
+            this.lb_SaveScreen.AutoSize = true;
+            this.lb_SaveScreen.Location = new System.Drawing.Point(112, 113);
+            this.lb_SaveScreen.Name = "lb_SaveScreen";
+            this.lb_SaveScreen.Size = new System.Drawing.Size(41, 12);
+            this.lb_SaveScreen.TabIndex = 1;
+            this.lb_SaveScreen.Text = "label7";
+            // 
+            // btn_SaveScreen
+            // 
+            this.btn_SaveScreen.Location = new System.Drawing.Point(114, 75);
+            this.btn_SaveScreen.Name = "btn_SaveScreen";
+            this.btn_SaveScreen.Size = new System.Drawing.Size(75, 23);
+            this.btn_SaveScreen.TabIndex = 0;
+            this.btn_SaveScreen.Text = "保存位置";
+            this.btn_SaveScreen.UseVisualStyleBackColor = true;
+            this.btn_SaveScreen.Click += new System.EventHandler(this.btn_SaveScreen_Click);
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(454, 275);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "开发中...";
+            this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // lbl_time
             // 
@@ -428,6 +497,47 @@
             this.timer_Time.Enabled = true;
             this.timer_Time.Tick += new System.EventHandler(this.timer_Time_Tick);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.关于ToolStripMenuItem,
+            this.退出ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(477, 25);
+            this.menuStrip1.TabIndex = 11;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // 关于ToolStripMenuItem
+            // 
+            this.关于ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.功能介绍ToolStripMenuItem,
+            this.开发者ToolStripMenuItem});
+            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.关于ToolStripMenuItem.Text = "关于";
+            // 
+            // 功能介绍ToolStripMenuItem
+            // 
+            this.功能介绍ToolStripMenuItem.Name = "功能介绍ToolStripMenuItem";
+            this.功能介绍ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.功能介绍ToolStripMenuItem.Text = "功能介绍";
+            this.功能介绍ToolStripMenuItem.Click += new System.EventHandler(this.功能介绍ToolStripMenuItem_Click);
+            // 
+            // 开发者ToolStripMenuItem
+            // 
+            this.开发者ToolStripMenuItem.Name = "开发者ToolStripMenuItem";
+            this.开发者ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.开发者ToolStripMenuItem.Text = "开发者";
+            this.开发者ToolStripMenuItem.Click += new System.EventHandler(this.开发者ToolStripMenuItem_Click);
+            // 
+            // 退出ToolStripMenuItem
+            // 
+            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -435,9 +545,11 @@
             this.ClientSize = new System.Drawing.Size(477, 354);
             this.Controls.Add(this.lbl_time);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "愈来愈好制作QQ375275672";
+            this.Text = "工具箱";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -448,6 +560,10 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_KD)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -477,7 +593,6 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btn_CheckKD;
-        private System.Windows.Forms.TextBox tBx_DanHao;
         private System.Windows.Forms.Label lb_KDN;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cBx_ShipperCode;
@@ -488,6 +603,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Remark;
         private System.Windows.Forms.Label lbl_time;
         private System.Windows.Forms.Timer timer_Time;
+        private System.Windows.Forms.Button btn_SaveScreen;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.Label lb_SaveScreen;
+        private System.Windows.Forms.Button btn_ChooseScreen;
+        private System.Windows.Forms.Button btn_FullScreen;
+        private System.Windows.Forms.ComboBox cBx_DanHao;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 功能介绍ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 开发者ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
     }
 }
 

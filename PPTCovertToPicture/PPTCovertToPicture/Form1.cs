@@ -13,6 +13,8 @@ using Microsoft.Office.Interop.PowerPoint;
 using System.IO;
 using SiuStream;
 using Newtonsoft.Json;
+using System.Threading;
+using System.Drawing.Imaging;
 
 namespace PPTCovertToPicture
 {
@@ -25,7 +27,7 @@ namespace PPTCovertToPicture
         public static extern bool GetSaveFileName([In, Out] OpenFileName ofn);
         public string Openurl;
         public string Saveurl;
-        public string SaveName="幻灯片";
+        public string SaveName = "新保存";
 
 
         KdGoldAPI.KdApiSearch KDApi = new KdGoldAPI.KdApiSearch();
@@ -39,12 +41,12 @@ namespace PPTCovertToPicture
             bkWorker.DoWork += new DoWorkEventHandler(DoWork);
             bkWorker.ProgressChanged += new ProgressChangedEventHandler(ProgessChanged);
             bkWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CompleteWork);
-    
+
         }
 
         private void btn_open_Click(object sender, EventArgs e)
         {
-            Openurl= OpenFile(System.Windows.Forms.Application.StartupPath);
+            Openurl = OpenFile(System.Windows.Forms.Application.StartupPath);
         }
         public static string OpenFile(string path)
         {
@@ -99,7 +101,7 @@ namespace PPTCovertToPicture
             Saveurl = Saveurl.Split('.')[0];
             System.Diagnostics.Process.Start(Saveurl);
         }
-      
+
 
         private void btn_save_Click(object sender, EventArgs e)
         {
@@ -193,8 +195,8 @@ namespace PPTCovertToPicture
                 string line;
                 while (null != (line = m_StreamReader.ReadLine()))
                 {
-                   
-                    w.WriteLine(line);  
+
+                    w.WriteLine(line);
                 }
                 w.Close();
                 m_StreamReader.Close();
@@ -204,6 +206,7 @@ namespace PPTCovertToPicture
 
             m_StreamReader.Close();
             MessageBox.Show("加密完成", "提示", MessageBoxButtons.OK);
+            System.Diagnostics.Process.Start(savefile);
         }
 
         private void btn_saveUrl_Click(object sender, EventArgs e)
@@ -258,34 +261,41 @@ namespace PPTCovertToPicture
 
             m_StreamReader.Close();
             MessageBox.Show("解密完成", "提示", MessageBoxButtons.OK);
+            System.Diagnostics.Process.Start(savefile);
         }
 
         private void btn_CheckKD_Click(object sender, EventArgs e)
         {
-            if (tBx_DanHao.Text == "")
+            if (cBx_DanHao.Text == "")
             {
                 MessageBox.Show("请输入单号", "提示", MessageBoxButtons.OK);
                 return;
             }
-            KdGoldAPI.KdApiSearch.LosisticCode = tBx_DanHao.Text;
+            if (cBx_ShipperCode.Text == "")
+            {
+                MessageBox.Show("请选择快递", "提示", MessageBoxButtons.OK);
+                return;
+            }
+            KdGoldAPI.KdApiSearch.LosisticCode = cBx_DanHao.Text;
             dataGridView_KD.Rows.Clear();
+          
             explainJson();
             //tBx_ShowKD.Text= KDApi.getOrderTracesByJson();
         }
         private void explainJson()
         {
-            var Json= KDApi.getOrderTracesByJson();
+            var Json = KDApi.getOrderTracesByJson();
             //将Json数据反序列化
             JsonParser jp = (JsonParser)JsonConvert.DeserializeObject<JsonParser>(Json);
             List<Traces> list = jp.Traces;
-            if (jp.Success == false||list.Count==0)
+            if (jp.Success == false || list.Count == 0)
             {
-                MessageBox.Show("请检查该订单是否为该物流\r\n"+jp.Reason, "查询失败", MessageBoxButtons.OK);
+                MessageBox.Show("请检查该订单是否为该物流\r\n" + jp.Reason, "查询失败", MessageBoxButtons.OK);
                 return;
             }
 
-           
-            for(int i=0;i<list.Count;i++)
+
+            for (int i = 0; i < list.Count; i++)
             {
                 dataGridView_KD.Rows.Add();
                 dataGridView_KD.Rows[i].Cells[0].Value = list[i].AcceptTime.ToString();
@@ -293,20 +303,21 @@ namespace PPTCovertToPicture
                 if (list[i].Remark == null)
                     list[i].Remark = "无";
                 dataGridView_KD.Rows[i].Cells[2].Value = list[i].Remark.ToString();
-                
+
             }
             lb_KDN.Text = list[list.Count - 1].AcceptTime + " " + list[list.Count - 1].AcceptStation;
             //foreach (var i in list)
             //    dataGridView_KD.Columns[0]. = list;
 
-
+            historyCheack();
 
         }
         private void comboBox1_TextChanged(object sender, EventArgs e)
         {
             switch (cBx_ShipperCode.Text)
             {
-                case "EMS":KdGoldAPI.KdApiSearch.ShipperCode = "EMS";
+                case "EMS":
+                    KdGoldAPI.KdApiSearch.ShipperCode = "EMS";
                     break;
                 case "顺丰":
                     KdGoldAPI.KdApiSearch.ShipperCode = "SF";
@@ -346,7 +357,7 @@ namespace PPTCovertToPicture
                     break;
                 case "跨越速运":
                     KdGoldAPI.KdApiSearch.ShipperCode = "KYSY";
-                   break;
+                    break;
                 case "安能":
                     KdGoldAPI.KdApiSearch.ShipperCode = "ANE";
                     break;
@@ -361,15 +372,320 @@ namespace PPTCovertToPicture
                     break;
                 case "邮政快递包裹":
                     KdGoldAPI.KdApiSearch.ShipperCode = "YZPY";
-                    break;                
+                    break;
             }
         }
 
+        //查询订单记录
+        private void historyCheack()
+        {
+            if (!File.Exists(System.Windows.Forms.Application.StartupPath + @"\cookie.txt"))
+            { 
+                FileInfo f = new FileInfo(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
+                StreamWriter w = f.CreateText();
+                w.Close();
+            }
+
+            SiuStreamReader m_StreamReader = new SiuStreamReader(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
+            string line = cBx_ShipperCode.Text + ";" + cBx_DanHao.Text;
+            string tmp;
+            while ((tmp= m_StreamReader.ReadLine()) != null)
+            {
+                if (tmp == line)
+                {
+                    m_StreamReader.Close();
+                    return;
+                }
+                
+            }
+            m_StreamReader.Close();
+            try
+            {
+                //FileInfo f = new FileInfo(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
+                //StreamWriter w = f.CreateText();
+                StreamWriter w = new StreamWriter(System.Windows.Forms.Application.StartupPath + @"\cookie.txt", true);
+                // string line = m_StreamReader.ReadLine();//为什么就是不能往里写数据呢？？？
+
+
+                w.WriteLine(line);
+                
+                //label1.Text = line;
+                w.Close();        
+              
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+        }
+        private void cBx_DanHao_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //SiuStreamReader m_StreamReader = new SiuStreamReader(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
+            //string tmpReader;
+            //while ((tmpReader = m_StreamReader.ReadLine()) != null)
+            //{
+            //    var tmpKD = tmpReader.Split(';');
+            //    cBx_DanHao.Items.Add(tmpKD[1]);
+
+            cBx_ShipperCode.Text = tmpKD[0];
+            cBx_DanHao.Text = tmpKD[1];
+            //}
+        }
+        static string lasttmpReader;
+        static string[] tmpKD;
+        private void cBx_DanHao_MouseClick(object sender, MouseEventArgs e)
+        {
+
+            SiuStreamReader m_StreamReader = new SiuStreamReader(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
+            string tmpReader;
+            foreach (var tmp in cBx_DanHao.Items)
+            {
+                if (tmp.ToString() ==lasttmpReader)
+                {
+                    m_StreamReader.Close();
+                    return;
+                }
+            }
+            while ((tmpReader = m_StreamReader.ReadLine()) != null)
+            {
+                 tmpKD = tmpReader.Split(';');
+                cBx_DanHao.Items.Add(tmpKD[1]);
+                lasttmpReader = tmpKD[1];
+                //cBx_ShipperCode.Text = tmpKD[0];
+                //cBx_DanHao.Text = tmpKD[1];
+            }
+            m_StreamReader.Close();
+        }
         private void timer_Time_Tick(object sender, EventArgs e)
         {
             lbl_time.Text = DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss");
         }
+
+        private void btn_SaveScreen_Click(object sender, EventArgs e)
+        {
+            Saveurl = SaveFile(System.Windows.Forms.Application.StartupPath, SaveName);
+            //Saveurl = Saveurl.Split('.')[0];
+            lb_SaveScreen.Text = Saveurl;
+        }
+
+        private void btn_FullScreen_Click(object sender, EventArgs e)
+        {
+            if (Saveurl == null)
+            {
+                MessageBox.Show("请选择保存位置！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            this.Hide();
+            Thread.Sleep(1000);//延时2秒
+            Bitmap myImage = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            Graphics g = Graphics.FromImage(myImage);
+            g.CopyFromScreen(new System.Drawing.Point(0, 0), new System.Drawing.Point(0, 0), new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+            IntPtr dc1 = g.GetHdc();
+            g.ReleaseHdc(dc1);
+            myImage.Save(@Saveurl);
+            this.Show();
+            DialogResult dr = MessageBox.Show("截图完成,是否查看", "提示", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                System.Diagnostics.Process.Start(Saveurl);
+            }
+
+        }
+
+        //记录鼠标按下坐标，确定绘图起点  
+        private System.Drawing.Point DownPoint = System.Drawing.Point.Empty;
+        //截图完成  
+        private bool CatchFinished = false;
+        //截图开始  
+        private bool CatchStart = false;
+        //保存原始图像  
+        private Bitmap originBmp;
+        //保存截图的矩形  
+        private Rectangle CatchRect;
+        private void btn_ChooseScreen_Click(object sender, EventArgs e)
+        {
+     
+            //隐藏当前窗体  
+            this.Hide();
+            //让线程睡眠一段时间，窗体消失需要一点时间  
+            Thread.Sleep(50);
+            //Catch catchForm = new Catch();
+            //新建一个和屏幕大小相同的图片  
+            Bitmap CatchBmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
+            //在新图片上创建一个画布  
+            Graphics g = Graphics.FromImage(CatchBmp);
+            //保存全屏图片  
+            g.CopyFromScreen(new System.Drawing.Point(0, 0), new System.Drawing.Point(0, 0), new Size(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height));
+            //将Catch窗体的背景设为全屏时的图片  
+            //catchForm.BackgroundImage = CatchBmp;
+
+            //if (catchForm.ShowDialog() == DialogResult.OK)
+            //{
+            //    //如果Catch窗体结束，就将剪贴板中的图片放到信息发送框中  
+            //    IDataObject iData = Clipboard.GetDataObject();
+            //    DataFormats.Format myFormat = DataFormats.GetFormat(DataFormats.Bitmap);
+            //    if (iData.GetDataPresent(DataFormats.Bitmap))
+            //    {
+            //        //strtxtMessage.Paste(myFormat);
+            //        //清楚剪切板中的对象  
+            //        Clipboard.Clear();
+            //    }
+            //    this.Show();
+                //再次显示此窗体  
+
+            //}
+
+        }
+
+
+        private void Catch_Load(object sender, EventArgs e)
+        {
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            this.UpdateStyles();
+            //BackgroundImage为全屏图片，我们另用变量来保存全屏图片  
+            originBmp = new Bitmap(this.BackgroundImage);
+        }
+
+        private void Catch_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
+
+        private void Catch_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                //如果捕捉没有开始  
+                if (!CatchStart)
+                {
+                    CatchStart = true;
+                    //保存鼠标按下坐标  
+                    DownPoint = new System.Drawing.Point(e.X, e.Y);
+                }
+            }
+        }
+
+        private void Catch_MouseMove(object sender, MouseEventArgs e)
+        {
+            //如果捕捉开始  
+            if (CatchStart)
+            {
+                //新建一个图片对象，并让它与原始图片相同  
+                Bitmap destBmp = (Bitmap)originBmp.Clone();
+                //获取鼠标的坐标  
+                System.Drawing.Point newPoint = new System.Drawing.Point(DownPoint.X, DownPoint.Y);
+                //在刚才新建的图片上新建一个画板  
+                Graphics g = Graphics.FromImage(destBmp);
+                //获取画笔对象  
+                Pen pen = new Pen(Color.Blue, 1);
+                //获取矩形的长和宽  
+                int width = Math.Abs(e.X - DownPoint.X);
+                int height = Math.Abs(e.Y - DownPoint.Y);
+                //判断矩形的起始坐标  
+                if (e.X < DownPoint.X)
+                    newPoint.X = e.X;
+                if (e.Y < DownPoint.Y)
+                    newPoint.Y = e.Y;
+                //保存矩形  
+                CatchRect = new Rectangle(newPoint, new Size(width, height));
+                //将矩形花在这个画板上  
+                g.DrawRectangle(pen, CatchRect);
+                //释放这个画板  
+                g.Dispose();
+                //重新创建一个Graphics类  
+                Graphics g1 = this.CreateGraphics();
+                //如果之前那个画板不释放，而直接g=this.CreateGraphics()这样的话无法释放掉第一次创建的g,因为只是把地址转到新的g了，如同string一样。  
+                //将刚才所画的图片画到这个窗体上  
+                g1.DrawImage(destBmp, new System.Drawing.Point(0, 0));
+                //这个也可以属于二次缓冲技术，如果直接将矩形画在窗体上，会造成图片抖动并且会有无数个矩形  
+                //释放这个画板  
+                g1.Dispose();
+                //释放掉Bmp对象。  
+                destBmp.Dispose();
+                //要及时释放不会再次使用的对象，不然内存将会被大量消耗  
+            }
+        }
+
+        private void Catch_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                //如果已经开始绘制  
+                if (CatchStart)
+                {
+                    //将开始绘制设为false  
+                    CatchStart = false;
+                    //完成绘制设为true  
+                    CatchFinished = true;
+                }
+            }
+        }
+
+        private void Catch_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && CatchFinished)
+            {
+                if (CatchRect.Contains(new System.Drawing.Point(e.X, e.Y)))
+                {
+                    //新建一个与矩形等大的空白图片  
+                    Bitmap catchedBmp = new Bitmap(CatchRect.Width, CatchRect.Height);
+                    //在空白图片上新建一个画板  
+                    Graphics g = Graphics.FromImage(catchedBmp);
+                    //将origin中的指定部分按照指定大小画在画板上  
+                    g.DrawImage(originBmp, new Rectangle(0, 0, CatchRect.Width, CatchRect.Height), CatchRect, GraphicsUnit.Pixel);
+                    //将图片保存到剪贴板上  
+                    Clipboard.SetImage(catchedBmp);
+                    //释放Graphics对象  
+                    g.Dispose();
+                    //完成一次操作  
+                    CatchFinished = false;
+                    //将背景图片设置为originBmp中的图片  
+                    this.BackgroundImage = originBmp;
+                    //释放新图片对象  
+                    catchedBmp.Dispose();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
+            captureScreen(DownPoint.X, DownPoint.Y, CatchRect.Width, CatchRect.Height);
+        }
+
+
+
+
+        public static Bitmap captureScreen(int x, int y, int width, int height)
+        {
+            Bitmap bmp = new Bitmap(width, height);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.CopyFromScreen(new System.Drawing.Point(x, y), new System.Drawing.Point(0, 0), bmp.Size);
+                g.Dispose();
+            }
+            //bit.Save(@"capture2.png");  
+            return bmp;
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
+        private void 开发者ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("愈来喻好\nQQ3035608535", "开发者");
+        }
+
+        private void 功能介绍ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("如你所见~~~未完待续","温馨提示");
+        }
     }
+
     public class JsonParser
     {
         public int EBusinessID;
