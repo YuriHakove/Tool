@@ -18,7 +18,7 @@ using System.Drawing.Imaging;
 
 namespace PPTCovertToPicture
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         [DllImport("Comdlg32", CharSet = CharSet.Auto)]
         public static extern bool GetOpenFileName([In, Out] OpenFileName ofn);
@@ -31,7 +31,7 @@ namespace PPTCovertToPicture
 
 
         KdGoldAPI.KdApiSearch KDApi = new KdGoldAPI.KdApiSearch();
-        public Form1()
+        public MainForm()
         {
 
             InitializeComponent();
@@ -263,8 +263,8 @@ namespace PPTCovertToPicture
             MessageBox.Show("解密完成", "提示", MessageBoxButtons.OK);
             System.Diagnostics.Process.Start(savefile);
         }
-
-        private void btn_CheckKD_Click(object sender, EventArgs e)
+        
+    private void btn_CheckKD_Click(object sender, EventArgs e)
         {
             if (cBx_DanHao.Text == "")
             {
@@ -278,7 +278,7 @@ namespace PPTCovertToPicture
             }
             KdGoldAPI.KdApiSearch.LosisticCode = cBx_DanHao.Text;
             dataGridView_KD.Rows.Clear();
-          
+
             explainJson();
             //tBx_ShowKD.Text= KDApi.getOrderTracesByJson();
         }
@@ -380,7 +380,7 @@ namespace PPTCovertToPicture
         private void historyCheack()
         {
             if (!File.Exists(System.Windows.Forms.Application.StartupPath + @"\cookie.txt"))
-            { 
+            {
                 FileInfo f = new FileInfo(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
                 StreamWriter w = f.CreateText();
                 w.Close();
@@ -389,14 +389,14 @@ namespace PPTCovertToPicture
             SiuStreamReader m_StreamReader = new SiuStreamReader(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
             string line = cBx_ShipperCode.Text + ";" + cBx_DanHao.Text;
             string tmp;
-            while ((tmp= m_StreamReader.ReadLine()) != null)
+            while ((tmp = m_StreamReader.ReadLine()) != null)
             {
                 if (tmp == line)
                 {
                     m_StreamReader.Close();
                     return;
                 }
-                
+
             }
             m_StreamReader.Close();
             try
@@ -408,10 +408,10 @@ namespace PPTCovertToPicture
 
 
                 w.WriteLine(line);
-                
+
                 //label1.Text = line;
-                w.Close();        
-              
+                w.Close();
+
             }
             catch (Exception ex)
             {
@@ -427,12 +427,45 @@ namespace PPTCovertToPicture
             //{
             //    var tmpKD = tmpReader.Split(';');
             //    cBx_DanHao.Items.Add(tmpKD[1]);
+            //if (cBx_DanHao.Text == "清除记录")
+            //{
+            //    FileInfo f = new FileInfo(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
+            //    StreamWriter w = f.CreateText();
+            //    w.Close();
+            //    cBx_DanHao.Text = "";
+            //    //return;
+            //}
+            if (cBx_DanHao.Text == "")
+                return;
+            foreach (string tmp in DicDanHao.Keys)
+            {
+                if (tmp == cBx_DanHao.Text)
+                {
+                    cBx_ShipperCode.Text =DicDanHao[tmp];
+                }
+            }
+            
+            
 
-            cBx_ShipperCode.Text = tmpKD[0];
-            cBx_DanHao.Text = tmpKD[1];
             //}
         }
+        private void cBx_DanHao_TextChanged(object sender, EventArgs e)
+        {
+            if (cBx_DanHao.Text == "清除记录")
+            {
+                FileInfo f = new FileInfo(System.Windows.Forms.Application.StartupPath + @"\cookie.txt");
+                StreamWriter w = f.CreateText();
+                w.Close();
+                cBx_DanHao.Text = "";
+      
+                cBx_DanHao.Items.Clear();
+                cBx_DanHao.Items.Add("清除记录");
+                return;
+            }
+    
+        }
         static string lasttmpReader;
+        Dictionary<string, string> DicDanHao = new Dictionary<string, string>();
         static string[] tmpKD;
         private void cBx_DanHao_MouseClick(object sender, MouseEventArgs e)
         {
@@ -441,7 +474,7 @@ namespace PPTCovertToPicture
             string tmpReader;
             foreach (var tmp in cBx_DanHao.Items)
             {
-                if (tmp.ToString() ==lasttmpReader)
+                if (tmp.ToString() == lasttmpReader)
                 {
                     m_StreamReader.Close();
                     return;
@@ -449,7 +482,9 @@ namespace PPTCovertToPicture
             }
             while ((tmpReader = m_StreamReader.ReadLine()) != null)
             {
-                 tmpKD = tmpReader.Split(';');
+               
+                tmpKD = tmpReader.Split(';');
+                DicDanHao.Add(tmpKD[1], tmpKD[0]);
                 cBx_DanHao.Items.Add(tmpKD[1]);
                 lasttmpReader = tmpKD[1];
                 //cBx_ShipperCode.Text = tmpKD[0];
@@ -505,7 +540,7 @@ namespace PPTCovertToPicture
         private Rectangle CatchRect;
         private void btn_ChooseScreen_Click(object sender, EventArgs e)
         {
-     
+
             //隐藏当前窗体  
             this.Hide();
             //让线程睡眠一段时间，窗体消失需要一点时间  
@@ -532,7 +567,7 @@ namespace PPTCovertToPicture
             //        Clipboard.Clear();
             //    }
             //    this.Show();
-                //再次显示此窗体  
+            //再次显示此窗体  
 
             //}
 
@@ -682,8 +717,10 @@ namespace PPTCovertToPicture
 
         private void 功能介绍ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("如你所见~~~未完待续","温馨提示");
+            MessageBox.Show("如你所见~~~未完待续", "温馨提示");
         }
+
+ 
     }
 
     public class JsonParser

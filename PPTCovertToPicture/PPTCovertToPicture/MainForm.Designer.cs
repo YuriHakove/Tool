@@ -1,6 +1,6 @@
 ﻿namespace PPTCovertToPicture
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btn_open = new System.Windows.Forms.Button();
             this.btn_covert = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
@@ -294,12 +294,15 @@
             // 
             this.cBx_DanHao.FormattingEnabled = true;
             this.cBx_DanHao.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.cBx_DanHao.Items.AddRange(new object[] {
+            "清除记录"});
             this.cBx_DanHao.Location = new System.Drawing.Point(104, 42);
             this.cBx_DanHao.Name = "cBx_DanHao";
             this.cBx_DanHao.Size = new System.Drawing.Size(181, 20);
+            this.cBx_DanHao.Sorted = true;
             this.cBx_DanHao.TabIndex = 9;
-            this.cBx_DanHao.Text = "886979750155933464";
             this.cBx_DanHao.SelectedIndexChanged += new System.EventHandler(this.cBx_DanHao_SelectedIndexChanged);
+            this.cBx_DanHao.TextChanged += new System.EventHandler(this.cBx_DanHao_TextChanged);
             this.cBx_DanHao.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cBx_DanHao_MouseClick);
             // 
             // dataGridView_KD
@@ -437,6 +440,7 @@
             // 
             // btn_ChooseScreen
             // 
+            this.btn_ChooseScreen.Enabled = false;
             this.btn_ChooseScreen.Location = new System.Drawing.Point(222, 152);
             this.btn_ChooseScreen.Name = "btn_ChooseScreen";
             this.btn_ChooseScreen.Size = new System.Drawing.Size(75, 35);
@@ -520,14 +524,14 @@
             // 功能介绍ToolStripMenuItem
             // 
             this.功能介绍ToolStripMenuItem.Name = "功能介绍ToolStripMenuItem";
-            this.功能介绍ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.功能介绍ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.功能介绍ToolStripMenuItem.Text = "功能介绍";
             this.功能介绍ToolStripMenuItem.Click += new System.EventHandler(this.功能介绍ToolStripMenuItem_Click);
             // 
             // 开发者ToolStripMenuItem
             // 
             this.开发者ToolStripMenuItem.Name = "开发者ToolStripMenuItem";
-            this.开发者ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.开发者ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.开发者ToolStripMenuItem.Text = "开发者";
             this.开发者ToolStripMenuItem.Click += new System.EventHandler(this.开发者ToolStripMenuItem_Click);
             // 
@@ -538,7 +542,7 @@
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -548,7 +552,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "工具箱";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
