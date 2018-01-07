@@ -15,6 +15,7 @@ using SiuStream;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Drawing.Imaging;
+using Scripts;
 
 namespace PPTCovertToPicture
 {
@@ -35,7 +36,7 @@ namespace PPTCovertToPicture
         {
 
             InitializeComponent();
-
+            this.skinEngine1.SkinFile = System.Windows.Forms.Application.StartupPath+ "\\IrisSkin4\\Skins\\MidsummerColor1.ssk";
             bkWorker.WorkerReportsProgress = true;
             bkWorker.WorkerSupportsCancellation = true;
             bkWorker.DoWork += new DoWorkEventHandler(DoWork);
@@ -494,7 +495,7 @@ namespace PPTCovertToPicture
         }
         private void timer_Time_Tick(object sender, EventArgs e)
         {
-            lbl_time.Text = DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss");
+            lbl_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         private void btn_SaveScreen_Click(object sender, EventArgs e)
@@ -574,120 +575,21 @@ namespace PPTCovertToPicture
         }
 
 
-        private void Catch_Load(object sender, EventArgs e)
-        {
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
-            this.UpdateStyles();
-            //BackgroundImage为全屏图片，我们另用变量来保存全屏图片  
-            originBmp = new Bitmap(this.BackgroundImage);
-        }
+        private System.Drawing.Point pt1;
+        bool l = false;
 
-        private void Catch_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
-        }
-
-        private void Catch_MouseDown(object sender, MouseEventArgs e)
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                //如果捕捉没有开始  
-                if (!CatchStart)
-                {
-                    CatchStart = true;
-                    //保存鼠标按下坐标  
-                    DownPoint = new System.Drawing.Point(e.X, e.Y);
-                }
+                l = true;
+                pt1 = new System.Drawing.Point(e.X, e.Y);
             }
         }
-
-        private void Catch_MouseMove(object sender, MouseEventArgs e)
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
-            //如果捕捉开始  
-            if (CatchStart)
-            {
-                //新建一个图片对象，并让它与原始图片相同  
-                Bitmap destBmp = (Bitmap)originBmp.Clone();
-                //获取鼠标的坐标  
-                System.Drawing.Point newPoint = new System.Drawing.Point(DownPoint.X, DownPoint.Y);
-                //在刚才新建的图片上新建一个画板  
-                Graphics g = Graphics.FromImage(destBmp);
-                //获取画笔对象  
-                Pen pen = new Pen(Color.Blue, 1);
-                //获取矩形的长和宽  
-                int width = Math.Abs(e.X - DownPoint.X);
-                int height = Math.Abs(e.Y - DownPoint.Y);
-                //判断矩形的起始坐标  
-                if (e.X < DownPoint.X)
-                    newPoint.X = e.X;
-                if (e.Y < DownPoint.Y)
-                    newPoint.Y = e.Y;
-                //保存矩形  
-                CatchRect = new Rectangle(newPoint, new Size(width, height));
-                //将矩形花在这个画板上  
-                g.DrawRectangle(pen, CatchRect);
-                //释放这个画板  
-                g.Dispose();
-                //重新创建一个Graphics类  
-                Graphics g1 = this.CreateGraphics();
-                //如果之前那个画板不释放，而直接g=this.CreateGraphics()这样的话无法释放掉第一次创建的g,因为只是把地址转到新的g了，如同string一样。  
-                //将刚才所画的图片画到这个窗体上  
-                g1.DrawImage(destBmp, new System.Drawing.Point(0, 0));
-                //这个也可以属于二次缓冲技术，如果直接将矩形画在窗体上，会造成图片抖动并且会有无数个矩形  
-                //释放这个画板  
-                g1.Dispose();
-                //释放掉Bmp对象。  
-                destBmp.Dispose();
-                //要及时释放不会再次使用的对象，不然内存将会被大量消耗  
-            }
-        }
-
-        private void Catch_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                //如果已经开始绘制  
-                if (CatchStart)
-                {
-                    //将开始绘制设为false  
-                    CatchStart = false;
-                    //完成绘制设为true  
-                    CatchFinished = true;
-                }
-            }
-        }
-
-        private void Catch_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left && CatchFinished)
-            {
-                if (CatchRect.Contains(new System.Drawing.Point(e.X, e.Y)))
-                {
-                    //新建一个与矩形等大的空白图片  
-                    Bitmap catchedBmp = new Bitmap(CatchRect.Width, CatchRect.Height);
-                    //在空白图片上新建一个画板  
-                    Graphics g = Graphics.FromImage(catchedBmp);
-                    //将origin中的指定部分按照指定大小画在画板上  
-                    g.DrawImage(originBmp, new Rectangle(0, 0, CatchRect.Width, CatchRect.Height), CatchRect, GraphicsUnit.Pixel);
-                    //将图片保存到剪贴板上  
-                    Clipboard.SetImage(catchedBmp);
-                    //释放Graphics对象  
-                    g.Dispose();
-                    //完成一次操作  
-                    CatchFinished = false;
-                    //将背景图片设置为originBmp中的图片  
-                    this.BackgroundImage = originBmp;
-                    //释放新图片对象  
-                    catchedBmp.Dispose();
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-            }
-            captureScreen(DownPoint.X, DownPoint.Y, CatchRect.Width, CatchRect.Height);
+            l = false;
+            this.Show();
         }
 
 
@@ -720,7 +622,22 @@ namespace PPTCovertToPicture
             MessageBox.Show("如你所见~~~未完待续", "温馨提示");
         }
 
- 
+        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (l)
+            {
+                Graphics g = this.CreateGraphics();
+                g.DrawLine(new Pen(new SolidBrush(Color.Red)), pt1, new System.Drawing.Point(e.X, e.Y));
+                pt1 = new System.Drawing.Point(e.X, e.Y);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var roots = new string[] { "root1", "root2" };
+            var items = new string[] { "demo1","demo2"};
+            LinqToXml.CreateElementByObjects( "roor","item1", items,"item2",roots);
+        }
     }
 
     public class JsonParser

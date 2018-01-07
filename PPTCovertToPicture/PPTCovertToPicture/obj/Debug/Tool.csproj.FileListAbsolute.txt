@@ -27,3 +27,17 @@ D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csproj.
 D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.exe
 D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.pdb
 D:\work\版本\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csprojResolveAssemblyReference.cache
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Tool.exe
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Tool.pdb
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Microsoft.Office.Interop.PowerPoint.dll
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Newtonsoft.Json.dll
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\office.dll
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\Microsoft.Vbe.Interop.dll
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\bin\Debug\stdole.dll
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csprojResolveAssemblyReference.cache
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csproj.ResolveComReference.cache
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\PPTCovertToPicture.MainForm.resources
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.Properties.Resources.resources
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.csproj.GenerateResource.Cache
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.exe
+G:\demo\Tool\PPTCovertToPicture\PPTCovertToPicture\obj\Debug\Tool.pdb
