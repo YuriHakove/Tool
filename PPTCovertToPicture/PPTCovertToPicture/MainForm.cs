@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using IronPython.Hosting;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using System.IO;
-using SiuStream;
+using Microsoft.Scripting.Hosting;
 using Newtonsoft.Json;
-using System.Threading;
-using System.Drawing.Imaging;
 using Scripts;
+using SiuStream;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace PPTCovertToPicture
 {
@@ -44,6 +42,8 @@ namespace PPTCovertToPicture
             bkWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CompleteWork);
 
         }
+
+        #region PPT转换功能
 
         private void btn_open_Click(object sender, EventArgs e)
         {
@@ -97,7 +97,22 @@ namespace PPTCovertToPicture
             bkWorker.RunWorkerAsync();
             ApplicationClass pptApplication = new ApplicationClass();
             Presentation pptPresentation = pptApplication.Presentations.Open(Openurl, MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
+
+            //for (int i = 0; i < pptPresentation.Slides.Count; i++)
+            //{
+            //     pptPresentation.Slides[i].Export(Saveurl + "\\幻灯片.png", "JPG", 800, 600);
+            //    //Image image = pptPresentation.Slides[i].SaveAsImage();
+            //    //String fileName = String.Format("图{0}.png", i);
+            //    //image.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+            //}
+            if (Saveurl == null)
+            {
+                Saveurl = Openurl;
+                Saveurl = Saveurl.Split('.')[0];
+            }
+           
             pptPresentation.SaveAs(Saveurl, PpSaveAsFileType.ppSaveAsPNG);
+
             //MessageBox.Show("转换完成", "提示", MessageBoxButtons.OK);
             Saveurl = Saveurl.Split('.')[0];
             System.Diagnostics.Process.Start(Saveurl);
@@ -110,6 +125,91 @@ namespace PPTCovertToPicture
             Saveurl = Saveurl.Split('.')[0];
             PPTSaveUrl.Text = Saveurl;
         }
+
+        private void textBox2_DragDrop(object sender, DragEventArgs e)
+        {
+          
+            textBox2.Text = dragDrop(e);
+            Openurl = textBox2.Text;
+
+        }
+        private void textBox2_DragEnter(object sender, DragEventArgs e)
+        {
+
+            dragEnter(e);
+        }
+        /// <summary>
+        /// 文件拖进事件处理：
+        /// </summary>
+        public void dragEnter(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))    //判断拖来的是否是文件
+                e.Effect = DragDropEffects.Link;                //是则将拖动源中的数据连接到控件
+            else e.Effect = DragDropEffects.None;
+        }
+
+        /// <summary>
+        /// 文件放下事件处理：
+        /// 放下, 另外需设置对应控件的 AllowDrop = true; 
+        /// 获取的文件名形如 "d:\1.txt;d:\2.txt"
+        /// </summary>
+        public string dragDrop(DragEventArgs e)
+        {
+            StringBuilder filesName = new StringBuilder("");
+            Array file = (System.Array)e.Data.GetData(DataFormats.FileDrop);//将拖来的数据转化为数组存储
+
+            foreach (object I in file)
+            {
+                string str = I.ToString();
+
+                System.IO.FileInfo info = new System.IO.FileInfo(str);
+                //若为目录，则获取目录下所有子文件名
+                if ((info.Attributes & System.IO.FileAttributes.Directory) != 0)
+                {
+                    str = getAllFiles(str);
+                    if (!str.Equals("")) filesName.Append((filesName.Length == 0 ? "" : ";") + str);
+                }
+                //若为文件，则获取文件名
+                else if (System.IO.File.Exists(str))
+                    filesName.Append((filesName.Length == 0 ? "" : ";") + str);
+            }
+
+            return filesName.ToString();
+        }
+
+        /// <summary>
+        /// 判断path是否为目录
+        /// </summary>
+        public bool IsDirectory(String path)
+        {
+            System.IO.FileInfo info = new System.IO.FileInfo(path);
+            return (info.Attributes & System.IO.FileAttributes.Directory) != 0;
+        }
+
+        /// <summary>
+        /// 获取目录path下所有子文件名
+        /// </summary>
+        public string getAllFiles(String path)
+        {
+            StringBuilder str = new StringBuilder("");
+            if (System.IO.Directory.Exists(path))
+            {
+                //所有子文件名
+                string[] files = System.IO.Directory.GetFiles(path);
+                foreach (string file in files)
+                    str.Append((str.Length == 0 ? "" : ";") + file);
+
+                //所有子目录名
+                string[] Dirs = System.IO.Directory.GetDirectories(path);
+                foreach (string dir in Dirs)
+                {
+                    string tmp = getAllFiles(dir); //子目录下所有子文件名
+                    if (!tmp.Equals("")) str.Append((str.Length == 0 ? "" : ";") + tmp);
+                }
+            }
+            return str.ToString();
+        }
+
         /// <summary>  
         /// 后台线程  
         /// </summary>  
@@ -161,6 +261,11 @@ namespace PPTCovertToPicture
 
             return -1;
         }
+
+        #endregion
+
+        #region 加密解密功能
+
         public static string openfile;
         public static string savefile;
         private void button1_Click(object sender, EventArgs e)
@@ -264,8 +369,12 @@ namespace PPTCovertToPicture
             MessageBox.Show("解密完成", "提示", MessageBoxButtons.OK);
             System.Diagnostics.Process.Start(savefile);
         }
-        
-    private void btn_CheckKD_Click(object sender, EventArgs e)
+
+        #endregion
+
+        #region 快递查询功能
+
+        private void btn_CheckKD_Click(object sender, EventArgs e)
         {
             if (cBx_DanHao.Text == "")
             {
@@ -442,11 +551,11 @@ namespace PPTCovertToPicture
             {
                 if (tmp == cBx_DanHao.Text)
                 {
-                    cBx_ShipperCode.Text =DicDanHao[tmp];
+                    cBx_ShipperCode.Text = DicDanHao[tmp];
                 }
             }
-            
-            
+
+
 
             //}
         }
@@ -458,12 +567,12 @@ namespace PPTCovertToPicture
                 StreamWriter w = f.CreateText();
                 w.Close();
                 cBx_DanHao.Text = "";
-      
+
                 cBx_DanHao.Items.Clear();
                 cBx_DanHao.Items.Add("清除记录");
                 return;
             }
-    
+
         }
         static string lasttmpReader;
         Dictionary<string, string> DicDanHao = new Dictionary<string, string>();
@@ -483,7 +592,7 @@ namespace PPTCovertToPicture
             }
             while ((tmpReader = m_StreamReader.ReadLine()) != null)
             {
-               
+
                 tmpKD = tmpReader.Split(';');
                 DicDanHao.Add(tmpKD[1], tmpKD[0]);
                 cBx_DanHao.Items.Add(tmpKD[1]);
@@ -493,10 +602,28 @@ namespace PPTCovertToPicture
             }
             m_StreamReader.Close();
         }
-        private void timer_Time_Tick(object sender, EventArgs e)
+
+        public class JsonParser
         {
-            lbl_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            public int EBusinessID;
+            public int OrderCode;
+            public string ShipperCode;
+            public string LogisticCode;
+            public bool Success;
+            public string CallBack;
+            public int State;
+            public string Reason;
+            public List<Traces> Traces;
         }
+        public class Traces
+        {
+            public string AcceptTime;
+            public string AcceptStation;
+            public string Remark;
+        }
+        #endregion
+
+        #region 截图、录屏功能
 
         private void btn_SaveScreen_Click(object sender, EventArgs e)
         {
@@ -607,6 +734,18 @@ namespace PPTCovertToPicture
             return bmp;
         }
 
+        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (l)
+            {
+                Graphics g = this.CreateGraphics();
+                g.DrawLine(new Pen(new SolidBrush(Color.Red)), pt1, new System.Drawing.Point(e.X, e.Y));
+                pt1 = new System.Drawing.Point(e.X, e.Y);
+            }
+        }
+        #endregion
+
+
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Exit();
@@ -621,43 +760,65 @@ namespace PPTCovertToPicture
         {
             MessageBox.Show("如你所见~~~未完待续", "温馨提示");
         }
-
-        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        private void timer_Time_Tick(object sender, EventArgs e)
         {
-            if (l)
-            {
-                Graphics g = this.CreateGraphics();
-                g.DrawLine(new Pen(new SolidBrush(Color.Red)), pt1, new System.Drawing.Point(e.X, e.Y));
-                pt1 = new System.Drawing.Point(e.X, e.Y);
-            }
+            lbl_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
+
+        #region Lingq To XML
 
         private void button2_Click(object sender, EventArgs e)
         {
             var roots = new string[] { "root1", "root2" };
-            var items = new string[] { "demo1","demo2"};
-            LinqToXml.CreateElementByObjects( "roor","item1", items,"item2",roots);
+            var items = new string[] { "demo1", "demo2" };
+            LinqToXml.CreateElementByObjects("roor", "item1", items, "item2", roots);
         }
+
+        #endregion
+
+        #region 翻译功能
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            //ScriptEngine pyEngine = Python.CreateEngine();//创建Python解释器对象
+            //ScriptEngine pyEngine = Python.CreateEngine(););
+            ScriptEngine Engine = Python.CreateEngine();
+            ICollection<string> Paths = Engine.GetSearchPaths();
+            Paths.Add("C:\\Users\\FJ\\AppData\\Local\\Programs\\Python\\Python36\\Lib");
+            Paths.Add("C:\\Users\\FJ\\AppData\\Local\\Programs\\Python\\Python36\\Lib\\json");
+            Paths.Add("C:\\Users\\FJ\\AppData\\Local\\Programs\\Python\\Python36\\Lib\\urllib");
+            Paths.Add("C:\\Users\\FJ\\AppData\\Local\\Programs\\Python\\Python36\\Lib\\urllib\\request.py");
+            Engine.SetSearchPaths(Paths);
+            ScriptScope pyScope = Engine.CreateScope();
+            dynamic py = Engine.ExecuteFile(@"baidu3.py");//读取脚本文件
+            //dynamic py = Engine.ExecuteFile(@"baidu2.py");//读取脚本文件
+            if (radioButtonBaiDu.Checked)
+            {
+                lblResult.Text= py.baidu_trans();
+            }
+            else if (radioButtonGoogle.Checked)
+            {
+                
+            }
+            else if (radioButtonYouDao.Checked)
+            {
+                lblResult.Text = py.youdao_trans();
+            }
+            //dynamic py = Engine.ExecuteFile(@"test.py");//读取脚本文件   
+
+            MessageBox.Show(py.GetVariable("result").ToString(), "测试");
+            //string dd = py.main(textBox1.Lines);//调用脚本文件中对应的函数
+            //textBox2.Text += dd + "\r\n";
+        }
+
+
+        #endregion
+
+    
     }
 
-    public class JsonParser
-    {
-        public int EBusinessID;
-        public int OrderCode;
-        public string ShipperCode;
-        public string LogisticCode;
-        public bool Success;
-        public string CallBack;
-        public int State;
-        public string Reason;
-        public List<Traces> Traces;
-    }
-    public class Traces
-    {
-        public string AcceptTime;
-        public string AcceptStation;
-        public string Remark;
-    }
+
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public class OpenFileName
